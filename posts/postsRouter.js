@@ -67,7 +67,7 @@ router.post('/', (req, res) => {
 router.post('/:id/comments', (req, res) => {
     const { id } = req.params;
     const { text } = req.body;
-    if (!text) {
+    /*if (!text) {
         res.status(400).json({message: 'please provide text for comment'});
     } else {
         blogPosts.insertComment(req.body)
@@ -79,9 +79,23 @@ router.post('/:id/comments', (req, res) => {
             }
         })
         .catch(err => {
-            res.status(500).json(err)
+            res.status(500).json(err.message)
         })
-    }
+    }*/
+
+    if (!id) {
+        res.status(404).json({message: "the post with the specified ID does not exist"})
+    } else if (!text) {
+        res.status(400).json({message: "please provide text for the comment"})
+    } else {
+        blogPosts.insertComment(req.body)
+        .then(c => {
+            res.status(200).json(c)
+        })
+        .catch(err => {
+            res.status(500).json(err)
+        })}
+    
 });
 
 
